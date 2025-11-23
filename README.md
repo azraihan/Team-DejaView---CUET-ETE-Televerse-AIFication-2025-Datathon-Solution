@@ -237,4 +237,3 @@ NLS(r, p) = 1 - LevenshteinDistance(r, p) / max(|r|, |p|)
 2. **Address Imbalances:** Targeted data collection for gender and dialect balance
 3. **ASR-LLM Projection Coupling:** Lightweight projection layers for acoustically-grounded text generation
 4. **Dialectal Vocabulary Expansion:** Specialized tokenizer for regional words
-# Team-DejaView---CUET-ETE-Televerse-AIFication-2025-Datathon-Solution
