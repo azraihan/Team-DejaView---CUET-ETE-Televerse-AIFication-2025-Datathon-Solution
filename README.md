@@ -199,7 +199,6 @@ NLS(r, p) = 1 - LevenshteinDistance(r, p) / max(|r|, |p|)
 ├── DejaView_whispermedium_standardBfinetune_train.ipynb  # Model 2: Full fine-tuning
 ├── DejaView_Whisper_Classifier_Training.ipynb      # Model 3: Regional adapter
 ├── DejaView_Whisper_STDProcessing_Training.ipynb   # Audio preprocessing + inference
-└── requirements.txt                                 # Dependencies
 ```
 
 ---
