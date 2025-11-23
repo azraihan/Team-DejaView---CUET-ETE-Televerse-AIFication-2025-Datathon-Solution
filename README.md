@@ -1,5 +1,5 @@
 # শব্দতরী: Bengali Regional Dialect ASR
-### AI-FICATION 2025 - Team DejaView Solution
+### AI-FICATION 2025 (Datathon) - Team DejaView Solution
 
 [![Kaggle](https://img.shields.io/badge/Kaggle-Competition-20BEFF?logo=kaggle)](https://www.kaggle.com)
 [![Python](https://img.shields.io/badge/Python-3.11-3776AB?logo=python)](https://www.python.org/)
