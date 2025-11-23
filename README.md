@@ -17,7 +17,7 @@ Transcribe **20 regional Bangladeshi dialects** into standard Bangla text with h
 ### Dataset Overview
 - **Training:** 3,350 audio files
 - **Test:** 450 audio files
-- **Dialects:** 20 regional variations (Chittagong, Sylhet, Dhaka, Rangpur, etc.)
+- **Dialects:** 20 regional variations
 - **Format:** 16 kHz, mono WAV
 - **Total Duration:** 3.90 hours
 - **Avg Duration:** 4.2 seconds/sample
@@ -133,7 +133,6 @@ Total Loss = Loss_ASR + α · Loss_Region
 ### Impact
 - **Before:** Silhouette Score = -0.3262 (overlapping clusters)
 - **After:** Silhouette Score = **0.8778** (clear dialect separation)
-- 73% improvement in dialect-specific feature learning
 
 ---
 
@@ -161,8 +160,7 @@ Total Loss = Loss_ASR + α · Loss_Region
 ✅ **Encoder-only fine-tuning** (Model 1: ~25% parameters trainable)
 ✅ **On-the-fly augmentation** (fresh each epoch)
 ✅ **Weighted sampling** for class balance
-✅ **Stratified train/val split** (90/10)
-✅ **Gradient checkpointing** for memory efficiency
+✅ **Stratified train/val split** (encoder-only: 90/10, full fine-tune: 80/20)
 
 ---
 
@@ -171,7 +169,6 @@ Total Loss = Loss_ASR + α · Loss_Region
 ### ROVER (Recognizer Output Voting Error Reduction)
 - **Method:** Weighted voting selecting prediction most similar to all others
 - **Models:** 4 variants of fine-tuned Whisper Medium
-- **Improvement:** +2.5% NLS over best single model
 
 ---
 
@@ -187,7 +184,6 @@ NLS(r, p) = 1 - LevenshteinDistance(r, p) / max(|r|, |p|)
 - **No systematic failure patterns** (t-SNE analysis shows random error distribution)
 - **OOV dialectal words** occasionally cause spelling mistakes
 - **Frozen decoder approach** (Model 1) performed best individually
-- **Regional adapter** improved dialect-specific feature learning by 73%
 
 ---
 
@@ -216,24 +212,24 @@ NLS(r, p) = 1 - LevenshteinDistance(r, p) / max(|r|, |p|)
 
 ---
 
-## 📊 Ablation Study
-
-| Feature | NLS Impact |
-|---------|-----------|
-| Base Model (no fine-tuning) | 0.72 |
-| + Fine-tuning | 0.86 |
-| + Audio preprocessing | 0.88 |
-| + Data augmentation | 0.89 |
-| + External dataset | 0.90 |
-| + Weighted sampling | 0.91 |
-| + Regional adapter | 0.91 |
-| + Ensemble (4 models) | **0.93** |
-
----
-
 ## 🔮 Future Directions
 
 1. **Expand Dataset:** Collect more regional dialectal data for low-resource regions
 2. **Address Imbalances:** Targeted data collection for gender and dialect balance
 3. **ASR-LLM Projection Coupling:** Lightweight projection layers for acoustically-grounded text generation
 4. **Dialectal Vocabulary Expansion:** Specialized tokenizer for regional words
+
+
+---
+
+## 📝 Citation
+
+```bibtex
+@misc{dejaview2025shobdotori,
+  title={শব্দতরী: Where Dialects Flow into Bangla},
+  author={Naswan, Ruwad and Tanjeed, Shadab and Raihan, Abrar Zahin},
+  year={2025},
+  organization={Team DejaView - CUET},
+  note={AI-FICATION 2025 Competition Solution}
+}
+```
