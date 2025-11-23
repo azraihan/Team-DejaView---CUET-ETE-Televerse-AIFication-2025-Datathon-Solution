@@ -8,6 +8,7 @@
 
 **Team Members:** [Ruwad Naswan](https://github.com/rwd51) • [Shadab Tanjeed](#) • [Abrar Zahin Raihan](https://github.com/azraihan)
 
+For more details, look into the [presentation](https://github.com/azraihan/Team-DejaView---CUET-ETE-Televerse-AIFication-2025-Datathon-Solution/blob/main/ai_fication_presentation.pdf) nad the [paper](#).
 ---
 
 ## 🎯 Problem Statement
