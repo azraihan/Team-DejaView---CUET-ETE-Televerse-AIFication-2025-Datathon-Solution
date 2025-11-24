@@ -8,7 +8,7 @@
 
 **Team Members:** [Ruwad Naswan](https://github.com/rwd51) • [Shadab Tanjeed](#) • [Abrar Zahin Raihan](https://github.com/azraihan)
 
-For more details, look into the [presentation](https://github.com/azraihan/Team-DejaView---CUET-ETE-Televerse-AIFication-2025-Datathon-Solution/blob/main/presentation/ai_fication_presentation.pdf) and the [paper](#).
+For more details, look into the [presentation](https://github.com/azraihan/Team-DejaView---CUET-ETE-Televerse-AIFication-2025-Datathon-Solution/blob/main/presentation/ai_fication_presentation.pdf) and the [paper](paper/DejaView_DilaectToASR.pdf).
 
 ---
 
@@ -17,6 +17,7 @@ For more details, look into the [presentation](https://github.com/azraihan/Team-
 Transcribe **20 regional Bangladeshi dialects** into standard Bangla text with high accuracy despite phonetic variations and diverse acoustic conditions.
 
 ### Dataset Overview
+- **Total:** 3,800 audio files
 - **Training:** 3,350 audio files
 - **Test:** 450 audio files
 - **Dialects:** 20 regional variations
@@ -43,8 +44,10 @@ Our solution achieved **0.93509 NLS (Public)** and **0.91782 NLS (Private)** on 
 
 ## 📊 Model Architecture
 
-### Base Model
-**BengaliAI Whisper Medium** - Pre-trained on Bengali ASR
+### Base Models
+We utilize two pre-trained Whisper models (~800M parameters each):
+- **bengaliAI/whisper-medium** - Pre-trained on standard Bengali ASR (1,177 hours)
+- **bengaliAI/whisper-medium-regional** - Pre-trained on regional Bengali speech
 
 ### Four Model Variants
 
@@ -91,7 +94,7 @@ Applied **during training** (fresh augmentations each epoch):
 - **Pitch Shifting** (±2 semitones)
 - **Gaussian Noise Injection** (0.001-0.01 amplitude)
 - **Volume Adjustment** (-6 to +6 dB)
-- **Probability:** 50% per sample
+- **Probability:** 30% per sample (p = 0.3)
 
 ---
 
@@ -138,7 +141,14 @@ Novel multi-task learning approach with encoder-level regional conditioning:
 ### Multi-task Loss
 ```
 Total Loss = Loss_ASR + α · Loss_Region
+(where α = 0.3)
 ```
+
+### Training Configuration
+- **Learning Rate:** 1×10⁻⁵
+- **Weight Decay:** 0.01
+- **Label Smoothing:** 0.1
+- **Epochs:** 8
 
 ### Impact
 - **Before:** Silhouette Score = -0.3262 (overlapping clusters)
@@ -160,11 +170,12 @@ Total Loss = Loss_ASR + α · Loss_Region
     'learning_rate': 1e-5,
     'weight_decay': 0.01,
     'warmup_steps': 500,
-    'num_epochs': 6,
+    'num_epochs': 5,  # Model 4: Regional Fine-Tuning
     'fp16': True,
     'optimizer': 'AdamW',
 }
 ```
+*Note: Other models trained for 6-8 epochs depending on strategy*
 
 ### Training Features
 ✅ **Encoder-only fine-tuning** (Model 1: ~25% parameters trainable)
@@ -179,6 +190,8 @@ Total Loss = Loss_ASR + α · Loss_Region
 ### ROVER (Recognizer Output Voting Error Reduction)
 - **Method:** Weighted voting selecting prediction most similar to all others
 - **Models:** 4 variants of fine-tuned Whisper Medium
+- **Performance Gain:** Ensemble significantly outperforms individual models, reducing individual biases
+- **Inference Speed:** ~0.7× real-time on GPU for efficient batch processing
 
 ---
 
@@ -190,10 +203,17 @@ Total Loss = Loss_ASR + α · Loss_Region
 NLS(r, p) = 1 - LevenshteinDistance(r, p) / max(|r|, |p|)
 ```
 
+### Competition Performance
+- **Public Leaderboard (30%):** 0.93518 NLS
+- **Private Leaderboard (70%):** 0.91782 NLS
+- **Final Ranking:** 🥈 **2nd Position** (Private Leaderboard)
+
 ### Key Findings
+- **Exceptional accuracy:** Over 90% perfect transcriptions (zero WER)
 - **No systematic failure patterns** (t-SNE analysis shows random error distribution)
 - **OOV dialectal words** occasionally cause spelling mistakes
 - **Frozen decoder approach** (Model 1) performed best individually
+- **Edge cases:** Very short utterances (3-4 words) occasionally lack context for disambiguation
 
 ---
 
@@ -221,12 +241,36 @@ NLS(r, p) = 1 - LevenshteinDistance(r, p) / max(|r|, |p|)
 
 ---
 
+## 🔍 Error Analysis & Limitations
+
+### Main Error Sources
+1. **Out-of-Vocabulary (OOV) Dialectal Terms**
+   - Under-represented region-specific words
+   - Orthographically variable dialect words lacking standardized spellings
+   - Phonetically ambiguous terms resembling common standard Bangla words
+
+2. **Edge Cases**
+   - Very short utterances (3-4 words) with insufficient context
+   - Background noise or rapid speech in specific acoustic conditions
+
+3. **System Limitations**
+   - Dataset imbalance constrains regional coverage
+   - Whisper-based training is computationally intensive
+   - No advanced ASR-LLM fusion techniques implemented
+
+### Robustness
+- Small public-to-private leaderboard gap (0.93518 → 0.91782) indicates strong generalization
+- Random error distribution (no clustering) shows effective bias reduction through ensemble
+
+---
+
 ## 🔮 Future Directions
 
 1. **Expand Dataset:** Collect more regional dialectal data for low-resource regions
 2. **Address Imbalances:** Targeted data collection for gender and dialect balance
-3. **ASR-LLM Projection Coupling:** Lightweight projection layers for acoustically-grounded text generation
+3. **ASR-LLM Fusion:** Integrate external language models (KenLM, Vicuna-series LLMs) and explore deeper fusion (SKIP-SALSA)
 4. **Dialectal Vocabulary Expansion:** Specialized tokenizer for regional words
+5. **Speaker Attributes:** Incorporate gender and speaker characteristics for improved robustness
 
 
 ---
