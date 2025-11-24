@@ -56,6 +56,12 @@ Our solution achieved **0.93509 NLS (Public)** and **0.91782 NLS (Private)** on 
 | **Model 4** | Full Fine-tuning (Regional → Regional) | 0.91096 | 0.88103 |
 | **Ensemble** | ROVER (4 models) | **0.93509** | **0.91782** |
 
+### Model 1: Encoder-Only Fine-tuning
+
+![Frozen Decoder Fine-tuning Architecture](images/Frozen%20Decoder%20Fine-tuning.png)
+
+This approach trains only the encoder layers while keeping the decoder frozen, adapting the acoustic encoder to regional dialects while preserving the decoder's language model capabilities.
+
 ---
 
 ## 🔧 Data Preprocessing
@@ -126,6 +132,8 @@ Novel multi-task learning approach with encoder-level regional conditioning:
 3. **Adapter Injection:** Regional vector added to encoder outputs
 4. **Stabilization:** LayerNorm applied for balance
 5. **Auxiliary Classifier:** Mean-pooling → Linear layer → Region prediction
+
+![Regional Classifier Adapter Architecture](images/Regional%20Classifier%20Adapter.png)
 
 ### Multi-task Loss
 ```
