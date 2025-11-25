@@ -282,7 +282,7 @@ NLS(r, p) = 1 - LevenshteinDistance(r, p) / max(|r|, |p|)
   title={শব্দতরী: Where Dialects Flow into Bangla},
   author={Naswan, Ruwad and Tanjeed, Shadab and Raihan, Abrar Zahin},
   year={2025},
-  organization={Team DejaView - CUET},
+  organization={Team DejaView},
   note={AI-FICATION 2025 Competition Solution}
 }
 ```
